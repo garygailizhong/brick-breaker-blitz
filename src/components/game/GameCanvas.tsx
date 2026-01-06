@@ -141,11 +141,15 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ width, height }) => {
       
       {/* Overlay for game states */}
       {(gameState === 'idle' || gameState === 'won' || gameState === 'lost') && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 rounded-2xl backdrop-blur-sm">
+        <div 
+          className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 rounded-2xl backdrop-blur-sm cursor-pointer"
+          onClick={gameState === 'idle' ? startGame : undefined}
+          onTouchStart={gameState === 'idle' ? (e) => { e.preventDefault(); startGame(); } : undefined}
+        >
           {gameState === 'idle' && (
             <>
               <h2 className="text-3xl font-bold text-white mb-2">打砖块</h2>
-              <p className="text-white/80 text-lg mb-6">滑动或移动鼠标开始游戏</p>
+              <p className="text-white/80 text-lg mb-6">点击屏幕开始游戏</p>
             </>
           )}
           
@@ -165,7 +169,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ width, height }) => {
           
           {(gameState === 'won' || gameState === 'lost') && (
             <button
-              onClick={resetGame}
+              onClick={(e) => { e.stopPropagation(); resetGame(); }}
               className="mt-4 px-8 py-3 bg-primary text-primary-foreground rounded-xl font-semibold text-lg hover:opacity-90 transition-opacity active:scale-95"
             >
               重新开始
